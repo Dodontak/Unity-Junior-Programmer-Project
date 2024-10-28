@@ -4,50 +4,62 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private float horizontalInput;
-    public float speed;
-    private Animator playerAnim;
-    private float playerScale;
-    public bool isOnGround;
-    private bool isAttacking;
-    public float jumpPower;
+    private PlayerAnimationController animController;
+    private PlayerState playerState;
     private Rigidbody2D playerRB;
+    private float moveSpeed;
+    private float playerScale;
+    private float jumpPower;
     void Start()
     {
-        playerAnim = GetComponent<Animator>();
+        animController = new PlayerAnimationController(GetComponent<Animator>());
+        playerState = new PlayerState();
         playerRB = GetComponent<Rigidbody2D>();
         playerScale = transform.localScale.x;
-        isAttacking = false;
+        jumpPower = 6;
+        moveSpeed = 6;
     }
 
     // Update is called once per frame
     void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        playerAnim.SetInteger("AnimState", 0);
-        if (horizontalInput != 0 && !isAttacking)
-        {
-            SetViewDirection(horizontalInput);
-            transform.Translate(Vector2.right * speed * Time.deltaTime * horizontalInput);
-            playerAnim.SetInteger("AnimState", 1);
-        }
+        HorizontalMove();
+        Attack();
+        Jump();
+        Fall();
+    }
+    private void Attack()
+    {
         if (Input.GetButtonDown("Fire1"))
         {
-            if (!isAttacking && isOnGround) {
-                playerAnim.SetTrigger("Attack1");
-                isAttacking = true;
+            if (!playerState.isAttacking && playerState.isOnGround)
+            {
+                animController.SetAttackTrigger();
+                playerState.isAttacking = true;
             }
         }
-        if (Input.GetButtonDown("Jump"))
+    }
+    private void Fall()
+    {
+        if (playerState.isOnGround == false)
         {
-            Jump();
-        }
-        if (isOnGround == false)
-        {
-            playerAnim.SetFloat("AirSpeedY", playerRB.linearVelocityY);
+            animController.SetAirSpeed(playerRB.linearVelocityY);
         }
     }
-
+    private void HorizontalMove()
+    {
+        float horizontalInput = Input.GetAxis("Horizontal");
+        if (horizontalInput != 0 && !playerState.isAttacking)//공격중일때는 움직이지 못함
+        {
+            SetViewDirection(horizontalInput);
+            transform.Translate(Vector2.right * moveSpeed * Time.deltaTime * horizontalInput);
+            animController.SetMovementState(1);
+        }
+        else
+        {
+            animController.SetMovementState(0);
+        }
+    }
     void SetViewDirection(float horizontalInput)
     {
         transform.localScale = new Vector3(horizontalInput > 0 ? playerScale : -playerScale, playerScale, playerScale);
@@ -55,11 +67,11 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
-        if (isOnGround && isAttacking == false)
+        if (Input.GetButtonDown("Jump") && playerState.isOnGround && playerState.isAttacking == false)
         {
-            isOnGround = false;
-            playerAnim.SetTrigger("Jump");
-            playerAnim.SetBool("Grounded", false);
+            playerState.isOnGround = false;
+            animController.SetJumpTrigger();
+            animController.SetGrounded(playerState.isOnGround);
             playerRB.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
         }
     }
@@ -67,12 +79,37 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            isOnGround = true;
-            playerAnim.SetBool("Grounded", true);
+            playerState.isOnGround = true;
+            animController.SetGrounded(playerState.isOnGround);
         }
     }
     public void PrintFloat()
     {
-        isAttacking = false;
+        playerState.isAttacking = false;
     }
+}
+
+public class PlayerAnimationController
+{
+    private Animator animator;
+    public PlayerAnimationController(Animator animator)
+    {
+        this.animator = animator;
+    }
+    public void SetAttackTrigger() => animator.SetTrigger("Attack1");
+    public void SetJumpTrigger() => animator.SetTrigger("Jump");
+    public void SetGrounded(bool isOnGround) => animator.SetBool("Grounded", isOnGround);
+    public void SetMovementState(int state) => animator.SetInteger("AnimState", state);
+    public void SetAirSpeed(float speed) => animator.SetFloat("AirSpeedY", speed);
+}
+
+public class PlayerState
+{
+    public PlayerState()
+    {
+        isAttacking = false;
+        isOnGround = false;
+    }
+    public bool isAttacking { get; set; }
+    public bool isOnGround { get; set; }
 }
