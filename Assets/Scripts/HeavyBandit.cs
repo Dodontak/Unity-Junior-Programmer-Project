@@ -40,7 +40,6 @@ public class HeavyBandit : Enemy
     public override void GetDamage(int val)
     {
         health -= val;
-        Debug.Log(health);
         if (health > 0)
         {
             animator.SetHurtTrigger();
