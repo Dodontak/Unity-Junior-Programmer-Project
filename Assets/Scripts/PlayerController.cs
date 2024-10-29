@@ -7,17 +7,22 @@ public class Player : MonoBehaviour
     private PlayerAnimationController animController;
     private PlayerState playerState;
     private Rigidbody2D playerRB;
+    private BoxCollider2D attackCollider;
+
     private float moveSpeed;
     private float playerScale;
     private float jumpPower;
+    private int damage;
     void Start()
     {
         animController = new PlayerAnimationController(GetComponent<Animator>());
         playerState = new PlayerState();
         playerRB = GetComponent<Rigidbody2D>();
+        attackCollider = GetComponent<BoxCollider2D>();
         playerScale = transform.localScale.x;
         jumpPower = 6;
         moveSpeed = 6;
+        damage = 1;
     }
 
     // Update is called once per frame
@@ -35,6 +40,7 @@ public class Player : MonoBehaviour
             if (!playerState.isAttacking && playerState.isOnGround)
             {
                 animController.SetAttackTrigger();
+                attackCollider.enabled = true;
                 playerState.isAttacking = true;
             }
         }
@@ -83,9 +89,18 @@ public class Player : MonoBehaviour
             animController.SetGrounded(playerState.isOnGround);
         }
     }
-    public void PrintFloat()
+    public void AttackEnd()
     {
+        attackCollider.enabled = false;
         playerState.isAttacking = false;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Enemy"))  // 적 태그를 가진 오브젝트 확인
+        {
+            other.GetComponent<Enemy>().GetDamage(damage);  // 적에게 데미지 주기
+        }
     }
 }
 
