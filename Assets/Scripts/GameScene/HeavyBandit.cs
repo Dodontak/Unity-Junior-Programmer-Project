@@ -3,7 +3,6 @@ using System.Collections;
 
 public class HeavyBandit : Enemy
 {
-    private HeavyBanditState state;
     private HeavyBanditAnimationController animator;
     void Start()
     {
@@ -11,7 +10,7 @@ public class HeavyBandit : Enemy
         speed = 2;
         health = 10;
         attackPoint = 1;
-        state = new HeavyBanditState();
+        state = new EnemyState();
         animator = new HeavyBanditAnimationController(GetComponent<Animator>());
         enemyScale = transform.localScale.x;
         StartCoroutine(MoveRandomly());
@@ -103,19 +102,4 @@ public class HeavyBanditAnimationController
     public void SetGrounded(bool isOnGround) => animator.SetBool("Grounded", isOnGround);
     public void SetMovementState(int state) => animator.SetInteger("AnimState", state);
     public void SetAirSpeed(float speed) => animator.SetFloat("AirSpeedY", speed);
-}
-
-public class HeavyBanditState
-{
-    public bool isAlive { get; set; }
-    public bool isAttacking { get; set; }
-    public bool isMoving { get; set; }
-    public int facingRight { get; set; }
-    public HeavyBanditState()
-    {
-        isAttacking = false;
-        isMoving = false;
-        facingRight = 1;
-        isAlive = true;
-    }
 }

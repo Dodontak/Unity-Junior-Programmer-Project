@@ -8,13 +8,17 @@ public class Player : MonoBehaviour
     private PlayerState playerState;
     private Rigidbody2D playerRB;
     private BoxCollider2D attackCollider;
+    private GameManager gameManager;
 
-    private float moveSpeed;
-    private float playerScale;
-    private float jumpPower;
-    private int damage;
+    public string playerName { get; private set; }
+    public float moveSpeed { get; private set; }
+    public float playerScale { get; private set; }
+    public float jumpPower { get; private set; }
+    public int damage { get; private set; }
     void Start()
     {
+        gameManager = GameManager.instance;
+        playerName = gameManager != null ? gameManager.playerName : "Default Name";
         animController = new PlayerAnimationController(GetComponent<Animator>());
         playerState = new PlayerState();
         playerRB = GetComponent<Rigidbody2D>();
@@ -22,7 +26,7 @@ public class Player : MonoBehaviour
         playerScale = transform.localScale.x;
         jumpPower = 6;
         moveSpeed = 6;
-        damage = 1;
+        damage = 2;
     }
 
     // Update is called once per frame
