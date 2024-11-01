@@ -5,17 +5,21 @@ public class GameManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     MainManager mainManager;
+    [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject lightBandit;
     [SerializeField] private GameObject heavyBandit;
     void Awake()
     {
         mainManager = MainManager.instance;
         SaveData saveData = mainManager.GetSaveData(mainManager.saveName);
-        if (mainManager.saveName != "default")
-        {
-            mainManager.playerName = saveData.playerData.name;
-        }
-        foreach (EnemyData enemyData in saveData.enemiesData)
+        mainManager.playerName = saveData.playerData.name;
+        SpawnEnemies(saveData.enemiesData);
+        SpawnPlayer(saveData.playerData);
+    }
+
+    void SpawnEnemies(List<EnemyData> enemiesData)
+    {
+        foreach (EnemyData enemyData in enemiesData)
         {
             if (enemyData.enemyName == "Heavy Bandit")
             {
@@ -26,5 +30,10 @@ public class GameManager : MonoBehaviour
                 Instantiate(lightBandit, enemyData.position, lightBandit.transform.rotation);
             }
         }
+    }
+
+    void SpawnPlayer(PlayerData playerData)
+    {
+        Instantiate(playerPrefab, playerData.position, playerPrefab.transform.rotation);
     }
 }
