@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class MainMenuUiHandler : MonoBehaviour
 {
@@ -56,5 +57,13 @@ public class MainMenuUiHandler : MonoBehaviour
         target.SetActive(true);
         yield return new WaitForSeconds(sec);
         target.SetActive(false);
+    }
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
