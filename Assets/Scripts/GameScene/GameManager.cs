@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject lightBandit;
     [SerializeField] private GameObject heavyBandit;
+
     void Awake()
     {
         mainManager = MainManager.instance;
@@ -51,4 +52,8 @@ public class GameManager : MonoBehaviour
         return DateTime.Now - gameStartTime;
     }
     
+    public int GetEnemyCount()
+    {
+        return FindObjectsByType<Enemy>(FindObjectsSortMode.None).Length;
+    }
 }

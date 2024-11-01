@@ -8,8 +8,9 @@ public class MainManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     static public MainManager instance;
-    public string playerName;
-    public string saveName;
+    private GeneralUIHandler generalUI;
+    public string playerName { get; set; }
+    public string saveName { get; set; }
     void Awake()
     {
         if (instance == null)
@@ -23,6 +24,9 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    void Start() {
+        generalUI = GeneralUIHandler.instance;
+    }
     public void Save(string saveFileName, TimeSpan playTime)
     {
         Enemy[] enemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
@@ -90,7 +94,7 @@ public class MainManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(saveName + " Does not exist.");
+            generalUI.PopWarningText("Save Slot is Empty!");
         }
     }
 }

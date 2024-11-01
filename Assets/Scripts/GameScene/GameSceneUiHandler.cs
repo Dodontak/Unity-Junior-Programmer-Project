@@ -10,6 +10,8 @@ public class GameSceneUiHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI playerNameText;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI enemyCountText;
+    [SerializeField] private GameObject wornPanel;
+
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private Button save1;
     [SerializeField] private Button save2;
@@ -87,10 +89,6 @@ public class GameSceneUiHandler : MonoBehaviour
     }
     private void UpdateEnemyCount()
     {
-        enemyCountText.text = "Enemy: " + GetEnemyCount();
-    }
-    private int GetEnemyCount()
-    {
-        return FindObjectsByType<Enemy>(FindObjectsSortMode.None).Length;
+        enemyCountText.text = "Enemy: " + gameManager.GetEnemyCount();
     }
 }

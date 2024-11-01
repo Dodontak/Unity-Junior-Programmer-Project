@@ -3406,6 +3406,7 @@ MonoBehaviour:
   playerNameText: {fileID: 2058832423}
   timerText: {fileID: 486914043}
   enemyCountText: {fileID: 1136841771}
+  wornPanel: {fileID: 2532403699324050763, guid: 7f6d01d42af783942af9cc4ad23f87c6, type: 3}
   pauseMenu: {fileID: 2142360534}
   save1: {fileID: 478007185}
   save2: {fileID: 1685578601}

@@ -9,14 +9,15 @@ public class MainMenuUiHandler : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private GameObject mainMenuButtons;
-    [SerializeField] private GameObject WarnPanel;
-    [SerializeField] private TextMeshProUGUI WarnText;
     [SerializeField] private TMP_InputField nameField;
+    private GeneralUIHandler generalUI;
+
     private MainManager mainManager;
 
     void Start()
     {
         mainManager = MainManager.instance;
+        generalUI = GeneralUIHandler.instance;
     }
     public void StartGameScene(string saveFileName)
     {
@@ -24,7 +25,7 @@ public class MainMenuUiHandler : MonoBehaviour
         {
             if (nameField.text.Length == 0)
             {
-                PopWarningText("Set your name for new game");
+                generalUI.PopWarningText("Set your name for new game");
             }
             else
             {
@@ -42,22 +43,6 @@ public class MainMenuUiHandler : MonoBehaviour
         obj.SetActive(!obj.activeSelf);
     }
 
-    public void PopWarningText(string warningText)
-    {
-        WarnText.text = warningText;
-        ActiveForSeconds(WarnPanel, 2);
-    }
-    void ActiveForSeconds(GameObject target, int sec)
-    {
-        StartCoroutine(ActiveAndDeactive(target, sec));
-    }
-
-    IEnumerator ActiveAndDeactive(GameObject target, int sec)
-    {
-        target.SetActive(true);
-        yield return new WaitForSeconds(sec);
-        target.SetActive(false);
-    }
     public void QuitGame()
     {
 #if UNITY_EDITOR
