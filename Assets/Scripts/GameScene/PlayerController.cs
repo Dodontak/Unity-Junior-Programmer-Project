@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     private PlayerState playerState;
     private Rigidbody2D playerRB;
     private BoxCollider2D attackCollider;
-    private GameManager gameManager;
+    private MainManager mainManager;
 
     public string playerName { get; private set; }
     public float moveSpeed { get; private set; }
@@ -17,8 +17,8 @@ public class Player : MonoBehaviour
     public int damage { get; private set; }
     void Start()
     {
-        gameManager = GameManager.instance;
-        playerName = gameManager != null ? gameManager.playerName : "Default Name";
+        mainManager = MainManager.instance;
+        playerName = mainManager != null ? mainManager.playerName : "Default Name";
         animController = new PlayerAnimationController(GetComponent<Animator>());
         playerState = new PlayerState();
         playerRB = GetComponent<Rigidbody2D>();

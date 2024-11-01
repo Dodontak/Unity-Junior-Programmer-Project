@@ -11,23 +11,33 @@ public class GameSceneUiHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI enemyCountText;
     [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private Button saveButton;
+    [SerializeField] private Button save1;
+    [SerializeField] private Button save2;
+    [SerializeField] private Button save3;
+    [SerializeField] private Button load1;
+    [SerializeField] private Button load2;
+    [SerializeField] private Button load3;
 
-    private GameManager gameManager;
+    private MainManager mainManager;
     DateTime currentTime;
     bool isPaused;
     void Start()
     {
-        gameManager = GameManager.instance;
+        mainManager = MainManager.instance;
         currentTime = DateTime.Now;
-        saveButton.onClick.AddListener(gameManager.Save);
+        save1.onClick.AddListener(() => mainManager.Save("savefile1"));
+        save2.onClick.AddListener(() => mainManager.Save("savefile2"));
+        save3.onClick.AddListener(() => mainManager.Save("savefile3"));
+        load1.onClick.AddListener(() => mainManager.Load("savefile1"));
+        load2.onClick.AddListener(() => mainManager.Load("savefile2"));
+        load3.onClick.AddListener(() => mainManager.Load("savefile3"));
         InvokeRepeating("UpdatePlayTime", 0f, 1f);
         isPaused = false;
-        if (gameManager != null)
+        if (mainManager != null)
         {
-            playerNameText.text = gameManager.playerName;
+            playerNameText.text = mainManager.playerName;
         }
-        else 
+        else
         {
             playerNameText.text = "Default Name";
         }
@@ -47,12 +57,12 @@ public class GameSceneUiHandler : MonoBehaviour
         isPaused = !isPaused;
         if (isPaused)
         {
-            pauseMenu.SetActive(true);
+            TogleGameObject(pauseMenu, true);
             Time.timeScale = 0f;
         }
         else
         {
-            pauseMenu.SetActive(false);
+            TogleGameObject(pauseMenu, false);
             Time.timeScale = 1f;
         }
     }
@@ -64,6 +74,14 @@ public class GameSceneUiHandler : MonoBehaviour
 
         timerText.text = "" + (minutes < 10 ? "0" + minutes : minutes)
          + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    }
+    public void TogleGameObject(GameObject obj)
+    {
+        obj.SetActive(!obj.activeSelf);
+    }
+    private void TogleGameObject(GameObject obj, bool activeState)
+    {
+        obj.SetActive(activeState);
     }
     public void BackToMainMenu()
     {

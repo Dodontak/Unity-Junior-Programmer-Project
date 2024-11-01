@@ -11,23 +11,29 @@ public class MainMenuUiHandler : MonoBehaviour
     [SerializeField] private GameObject WarnPanel;
     [SerializeField] private TextMeshProUGUI WarnText;
     [SerializeField] private TMP_InputField nameField;
-    private GameManager gameManager;
+    private MainManager mainManager;
 
     void Start()
     {
-        gameManager = GameManager.instance;
-        
+        mainManager = MainManager.instance;
     }
-    public void StartGameScene()
+    public void StartGameScene(string saveFileName)
     {
-        if (nameField.text.Length == 0)
+        if (saveFileName == "default")
         {
-            PopWarningText("Set your name for new game");
+            if (nameField.text.Length == 0)
+            {
+                PopWarningText("Set your name for new game");
+            }
+            else
+            {
+                mainManager.playerName = nameField.text;
+                mainManager.Load(saveFileName);
+            }
         }
         else
         {
-            gameManager.playerName = nameField.text;
-            SceneManager.LoadScene(1);
+            mainManager.Load(saveFileName);
         }
     }
     public void TogleGameObject(GameObject obj)

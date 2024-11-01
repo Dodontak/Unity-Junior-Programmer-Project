@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [Serializable]
-class SaveData
+public class SaveData
 {
     public PlayerData playerData;
     public List<EnemyData> enemiesData;

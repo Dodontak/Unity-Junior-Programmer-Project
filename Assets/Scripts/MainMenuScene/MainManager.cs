@@ -1,10 +1,14 @@
 using UnityEngine;
+using System.IO;
+using System.Data.Common;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class MainManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    static public GameManager instance;
+    static public MainManager instance;
     public string playerName;
+    public string saveName;
     void Awake()
     {
         if (instance == null)
@@ -18,7 +22,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void Save()
+    public void Save(string saveFileName)
     {
         Enemy[] enemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
         Player player = FindAnyObjectByType<Player>();
@@ -29,7 +33,7 @@ public class GameManager : MonoBehaviour
         }
         saveData.playerData = GetPlayerData(player);
         string json = JsonUtility.ToJson(saveData);
-
+        File.WriteAllText(Application.persistentDataPath + "/" + saveFileName + ".json", json);
     }
     EnemyData GetEnemyData(Enemy enemy)
     {
@@ -54,9 +58,29 @@ public class GameManager : MonoBehaviour
         playerData.damage = player.damage;
         return playerData;
     }
-
-    public void Load()
+    public SaveData GetSaveData(string saveName)
     {
-
+        string path = Application.persistentDataPath + "/" + saveName + ".json";
+        SaveData data = new SaveData();
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            data = JsonUtility.FromJson<SaveData>(json);
+        }
+        return data;
+    }
+    public void Load(string saveFileName)
+    {
+        saveName = saveFileName;
+        string path = Application.persistentDataPath + "/" + saveName + ".json";
+        if (File.Exists(path))
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(1);
+        }
+        else
+        {
+            Debug.Log(saveName + " Does not exist.");
+        }
     }
 }

@@ -10,7 +10,7 @@ public class BackgroundMove : MonoBehaviour
     private float cameraTrackingRate;
     private int page;
     private Vector3 nextPos;
-    void Start()
+    void Awake()
     {
         mainCamera = GameObject.Find("Main Camera");
         page = 0;
@@ -19,6 +19,10 @@ public class BackgroundMove : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        Move();
+    }
+    void Move()
     {
         if (mainCamera != null)
         {
@@ -32,7 +36,9 @@ public class BackgroundMove : MonoBehaviour
             {
                 nextPos = new Vector3(transform.position.x - 16f, transform.position.y, transform.position.z);
                 --page;
-            } else {
+            }
+            else
+            {
                 nextPos = new Vector3((mainCamera.transform.position.x * cameraTrackingRate) + page * 16f, transform.position.y, transform.position.z);
             }
             transform.position = nextPos;
