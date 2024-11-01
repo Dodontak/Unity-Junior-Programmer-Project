@@ -24,7 +24,8 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    void Start() {
+    void Start()
+    {
         generalUI = GeneralUIHandler.instance;
     }
     public void Save(string saveFileName, TimeSpan playTime)
@@ -86,15 +87,23 @@ public class MainManager : MonoBehaviour
     public void Load(string saveFileName)
     {
         saveName = saveFileName;
-        string path = Application.persistentDataPath + "/" + saveName + ".json";
-        if (File.Exists(path))
+        if (saveName == "default")
         {
             Time.timeScale = 1f;
             SceneManager.LoadScene(1);
         }
         else
         {
-            generalUI.PopWarningText("Save Slot is Empty!");
+            string path = Application.persistentDataPath + "/" + saveName + ".json";
+            if (File.Exists(path))
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene(1);
+            }
+            else
+            {
+                generalUI.PopWarningText("Save Slot is Empty!");
+            }
         }
     }
 }
