@@ -2,6 +2,7 @@ using UnityEngine;
 using System.IO;
 using System.Data.Common;
 using UnityEngine.SceneManagement;
+using System;
 
 public class MainManager : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    public void Save(string saveFileName)
+    public void Save(string saveFileName, TimeSpan playTime)
     {
         Enemy[] enemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
         Player player = FindAnyObjectByType<Player>();
@@ -32,6 +33,7 @@ public class MainManager : MonoBehaviour
             saveData.enemiesData.Add(GetEnemyData(enemies[i]));
         }
         saveData.playerData = GetPlayerData(player);
+        saveData.playTime = playTime.ToString();
         string json = JsonUtility.ToJson(saveData);
         File.WriteAllText(Application.persistentDataPath + "/" + saveFileName + ".json", json);
     }
@@ -62,10 +64,18 @@ public class MainManager : MonoBehaviour
     {
         string path = Application.persistentDataPath + "/" + saveName + ".json";
         SaveData data = new SaveData();
-        if (File.Exists(path))
+        if (saveName == "default")
         {
-            string json = File.ReadAllText(path);
-            data = JsonUtility.FromJson<SaveData>(json);
+            TextAsset defaultSave = Resources.Load<TextAsset>("default");
+            data = JsonUtility.FromJson<SaveData>(defaultSave.text);
+        }
+        else
+        {
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                data = JsonUtility.FromJson<SaveData>(json);
+            }
         }
         return data;
     }

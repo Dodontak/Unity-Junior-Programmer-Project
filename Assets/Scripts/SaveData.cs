@@ -7,9 +7,9 @@ public class SaveData
 {
     public PlayerData playerData;
     public List<EnemyData> enemiesData;
+    public string playTime;
     public SaveData()
     {
-        playerData = new PlayerData();
         enemiesData = new List<EnemyData>();
     }
 }

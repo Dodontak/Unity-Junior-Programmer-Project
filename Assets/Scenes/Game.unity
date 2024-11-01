@@ -3413,6 +3413,7 @@ MonoBehaviour:
   load1: {fileID: 1409563817}
   load2: {fileID: 908298327}
   load3: {fileID: 1668528808}
+  gameManager: {fileID: 458587787}
 --- !u!114 &940629259
 MonoBehaviour:
   m_ObjectHideFlags: 0

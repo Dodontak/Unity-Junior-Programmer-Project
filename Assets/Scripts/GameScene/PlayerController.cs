@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         mainManager = MainManager.instance;
-        playerName = mainManager != null ? mainManager.playerName : "Default Name";
+        playerName = mainManager == null ? "Default Name" : mainManager.playerName;
         animController = new PlayerAnimationController(GetComponent<Animator>());
         playerState = new PlayerState();
         playerRB = GetComponent<Rigidbody2D>();

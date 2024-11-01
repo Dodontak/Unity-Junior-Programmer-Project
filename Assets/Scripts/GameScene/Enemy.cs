@@ -26,6 +26,6 @@ public class EnemyState
         isAlive = true; 
         isAttacking = false;
         isMoving = false;
-        facingRight = 1;
+        facingRight = Random.Range(0, 2) == 0 ? -1 : 1;
     }
 }

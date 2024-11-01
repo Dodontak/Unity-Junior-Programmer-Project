@@ -17,17 +17,15 @@ public class GameSceneUiHandler : MonoBehaviour
     [SerializeField] private Button load1;
     [SerializeField] private Button load2;
     [SerializeField] private Button load3;
-
+    [SerializeField] private GameManager gameManager;
     private MainManager mainManager;
-    DateTime currentTime;
     bool isPaused;
     void Start()
     {
         mainManager = MainManager.instance;
-        currentTime = DateTime.Now;
-        save1.onClick.AddListener(() => mainManager.Save("savefile1"));
-        save2.onClick.AddListener(() => mainManager.Save("savefile2"));
-        save3.onClick.AddListener(() => mainManager.Save("savefile3"));
+        save1.onClick.AddListener(() => mainManager.Save("savefile1", gameManager.GetPlayTime()));
+        save2.onClick.AddListener(() => mainManager.Save("savefile2", gameManager.GetPlayTime()));
+        save3.onClick.AddListener(() => mainManager.Save("savefile3", gameManager.GetPlayTime()));
         load1.onClick.AddListener(() => mainManager.Load("savefile1"));
         load2.onClick.AddListener(() => mainManager.Load("savefile2"));
         load3.onClick.AddListener(() => mainManager.Load("savefile3"));
@@ -43,7 +41,6 @@ public class GameSceneUiHandler : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateEnemyCount();
@@ -68,7 +65,7 @@ public class GameSceneUiHandler : MonoBehaviour
     }
     private void UpdatePlayTime()
     {
-        TimeSpan playTime = GetPlayTime();
+        TimeSpan playTime = gameManager.GetPlayTime();
         int minutes = playTime.Hours * 60 + playTime.Minutes;
         int seconds = playTime.Seconds;
 
@@ -91,10 +88,6 @@ public class GameSceneUiHandler : MonoBehaviour
     private void UpdateEnemyCount()
     {
         enemyCountText.text = "Enemy: " + GetEnemyCount();
-    }
-    private TimeSpan GetPlayTime()
-    {
-        return DateTime.Now - currentTime;
     }
     private int GetEnemyCount()
     {

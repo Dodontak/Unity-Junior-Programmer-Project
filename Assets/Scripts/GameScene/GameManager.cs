@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     MainManager mainManager;
+    DateTime gameStartTime;
+    
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject lightBandit;
     [SerializeField] private GameObject heavyBandit;
@@ -12,7 +15,13 @@ public class GameManager : MonoBehaviour
     {
         mainManager = MainManager.instance;
         SaveData saveData = mainManager.GetSaveData(mainManager.saveName);
-        mainManager.playerName = saveData.playerData.name;
+        gameStartTime = DateTime.Now;
+        if (mainManager.saveName != "default")
+        {
+            mainManager.playerName = saveData.playerData.name;
+            gameStartTime -= TimeSpan.Parse(saveData.playTime);
+            Debug.Log(saveData.playTime);
+        }
         SpawnEnemies(saveData.enemiesData);
         SpawnPlayer(saveData.playerData);
     }
@@ -36,4 +45,10 @@ public class GameManager : MonoBehaviour
     {
         Instantiate(playerPrefab, playerData.position, playerPrefab.transform.rotation);
     }
+
+    public TimeSpan GetPlayTime()
+    {
+        return DateTime.Now - gameStartTime;
+    }
+    
 }
