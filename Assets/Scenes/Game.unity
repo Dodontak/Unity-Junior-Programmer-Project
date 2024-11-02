@@ -837,7 +837,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &294699788
 RectTransform:
   m_ObjectHideFlags: 0
@@ -846,16 +846,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 294699787}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.2799387}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2142360535}
+  m_Father: {fileID: 940629262}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -123.6922, y: 22.250092}
-  m_SizeDelta: {x: 738.1797, y: 423.7179}
+  m_AnchoredPosition: {x: 2.3011475, y: -2.940857}
+  m_SizeDelta: {x: 25.179688, y: 22.717896}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &294699789
 MonoBehaviour:
@@ -1538,7 +1538,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cancel
+  m_text: Close
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2452,7 +2452,7 @@ GameObject:
   - component: {fileID: 604266212}
   - component: {fileID: 604266211}
   m_Layer: 5
-  m_Name: Cancel
+  m_Name: Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3408,6 +3408,7 @@ MonoBehaviour:
   enemyCountText: {fileID: 1136841771}
   wornPanel: {fileID: 2532403699324050763, guid: 7f6d01d42af783942af9cc4ad23f87c6, type: 3}
   pauseMenu: {fileID: 2142360534}
+  pauseDarkBackground: {fileID: 294699787}
   save1: {fileID: 478007185}
   save2: {fileID: 1685578601}
   save3: {fileID: 1247285102}
@@ -3492,6 +3493,7 @@ RectTransform:
   m_Children:
   - {fileID: 486914042}
   - {fileID: 1136841770}
+  - {fileID: 294699788}
   - {fileID: 2142360535}
   - {fileID: 2058832425}
   m_Father: {fileID: 0}
@@ -8122,7 +8124,7 @@ GameObject:
   - component: {fileID: 1618903005}
   - component: {fileID: 1618903004}
   m_Layer: 5
-  m_Name: Cancel
+  m_Name: Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8984,7 +8986,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cancel
+  m_text: Close
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9550,7 +9552,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 294699788}
   - {fileID: 1783461789}
   - {fileID: 1298079197}
   - {fileID: 1794536826}

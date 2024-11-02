@@ -13,6 +13,7 @@ public class GameSceneUiHandler : MonoBehaviour
     [SerializeField] private GameObject wornPanel;
 
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject pauseDarkBackground;
     [SerializeField] private Button save1;
     [SerializeField] private Button save2;
     [SerializeField] private Button save3;
@@ -56,11 +57,13 @@ public class GameSceneUiHandler : MonoBehaviour
         isPaused = !isPaused;
         if (isPaused)
         {
+            TogleGameObject(pauseDarkBackground, true);
             TogleGameObject(pauseMenu, true);
             Time.timeScale = 0f;
         }
         else
         {
+            TogleGameObject(pauseDarkBackground, false);
             TogleGameObject(pauseMenu, false);
             Time.timeScale = 1f;
         }
