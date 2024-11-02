@@ -62,12 +62,25 @@ public class MainMenuUiHandler : MonoBehaviour
         if (!File.Exists(recordFile)) return;
         string rankingJson = File.ReadAllText(recordFile);
         List<ClearTimeRecord> rankings = JsonUtility.FromJson<ClearSpeedRanking>(rankingJson).ranking;
-        for (int i = 0; i < rankings.Count; ++i)
+        for (int i = 0; i < highScoreRecordPanels.Length; ++i)
         {
-            FillARankingPanel(highScoreRecordPanels[i], rankings[i]);
+            if (i < rankings.Count)
+            {
+                FillARankingPanel(highScoreRecordPanels[i], rankings[i]);
+            }
+            else
+            {
+                FillARankingPanelEmpty(highScoreRecordPanels[i]);
+            }
         }
     }
-
+    private void FillARankingPanelEmpty(GameObject rankingPanel)
+    {
+        TextMeshProUGUI[] tmps = rankingPanel.GetComponentsInChildren<TextMeshProUGUI>();
+        //index: 0 = Rank string(1st, 2nd..), 1 = name string, 3 = clear time string
+        tmps[1].text = "No Record";
+        tmps[2].text = "";
+    }
     private void FillARankingPanel(GameObject rankingPanel, ClearTimeRecord record)
     {
         TextMeshProUGUI[] tmps = rankingPanel.GetComponentsInChildren<TextMeshProUGUI>();

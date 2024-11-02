@@ -14,24 +14,21 @@ public class GameSceneUiHandler : MonoBehaviour
 
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject pauseDarkBackground;
-    [SerializeField] private Button save1;
-    [SerializeField] private Button save2;
-    [SerializeField] private Button save3;
-    [SerializeField] private Button load1;
-    [SerializeField] private Button load2;
-    [SerializeField] private Button load3;
+    [SerializeField] private Button[] saveButtons;
+    [SerializeField] private Button[] loadButtons;
     [SerializeField] private GameManager gameManager;
+
     private MainManager mainManager;
     bool isPaused;
     void Start()
     {
         mainManager = MainManager.instance;
-        save1.onClick.AddListener(() => mainManager.Save("savefile1", gameManager.GetPlayTime()));
-        save2.onClick.AddListener(() => mainManager.Save("savefile2", gameManager.GetPlayTime()));
-        save3.onClick.AddListener(() => mainManager.Save("savefile3", gameManager.GetPlayTime()));
-        load1.onClick.AddListener(() => mainManager.Load("savefile1"));
-        load2.onClick.AddListener(() => mainManager.Load("savefile2"));
-        load3.onClick.AddListener(() => mainManager.Load("savefile3"));
+        for (int i = 0; i < 3; ++i)
+        {
+            string savefileName = "savefile" + i;
+            saveButtons[i].onClick.AddListener(() => mainManager.Save(savefileName, gameManager.GetPlayTime()));
+            loadButtons[i].onClick.AddListener(() => mainManager.Load(savefileName));
+        }
         InvokeRepeating("UpdatePlayTime", 0f, 1f);
         isPaused = false;
         if (mainManager != null)
@@ -77,11 +74,11 @@ public class GameSceneUiHandler : MonoBehaviour
         timerText.text = "" + (minutes < 10 ? "0" + minutes : minutes)
          + ":" + (seconds < 10 ? "0" + seconds : seconds);
     }
-    public void TogleGameObject(GameObject obj)
+    public static void TogleGameObject(GameObject obj)
     {
         obj.SetActive(!obj.activeSelf);
     }
-    private void TogleGameObject(GameObject obj, bool activeState)
+    public static void TogleGameObject(GameObject obj, bool activeState)
     {
         obj.SetActive(activeState);
     }

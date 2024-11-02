@@ -29,6 +29,7 @@ public class MainManager : MonoBehaviour
     }
     public void Save(string saveFileName, TimeSpan playTime)
     {
+        Debug.Log(saveFileName);
         Enemy[] enemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
         Player player = FindAnyObjectByType<Player>();
         SaveData saveData = new SaveData();

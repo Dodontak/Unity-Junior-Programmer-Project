@@ -5,16 +5,18 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    bool isClear = false;
     MainManager mainManager;
     DateTime gameStartTime;
+    bool isGameOver = false;
 
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject lightBandit;
     [SerializeField] private GameObject heavyBandit;
+    [SerializeField] private GameObject stageClearPanel;
 
     void Awake()
     {
@@ -31,15 +33,6 @@ public class GameManager : MonoBehaviour
     }
 
     
-    void Update() {
-        if (!isClear && GetEnemyCount() == 0)
-        {
-            isClear = true;
-            RecordRanking();
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(0);
-        }
-    }
     void SpawnEnemies(List<EnemyData> enemiesData)
     {
         foreach (EnemyData enemyData in enemiesData)
@@ -67,7 +60,13 @@ public class GameManager : MonoBehaviour
 
     public int GetEnemyCount()
     {
-        return FindObjectsByType<Enemy>(FindObjectsSortMode.None).Length;
+        int count = FindObjectsByType<Enemy>(FindObjectsSortMode.None).Length;
+        if (isGameOver == false && count == 0)
+        {
+            isGameOver = true;
+            GameClear();
+        }
+        return count;
     }
 
     void RecordRanking()
@@ -83,5 +82,17 @@ public class GameManager : MonoBehaviour
         ranking.Add(newRecord);
         string json = JsonUtility.ToJson(ranking);
         File.WriteAllText(recordFile, json);
+    }
+    public void GameClear()
+    {
+        GameSceneUiHandler.TogleGameObject(stageClearPanel, true);
+        RecordRanking();
+        Time.timeScale = 1f;
+        StartCoroutine(WaitAndSwithScene(0, 5f));
+    }
+    IEnumerator WaitAndSwithScene(int sceneIdx, float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        SceneManager.LoadScene(sceneIdx);
     }
 }
